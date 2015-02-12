@@ -1,0 +1,36 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "extractor" : {
+    "jdbc": { "driver": "com.mysql.jdbc.Driver",
+              "url": "jdbc:mysql://sakila/sakila",
+              "userName": "root",
+              "userPassword": "sakila",
+              "query": "select 
+      actor_id,
+      film_id
+    from film_actor" }
+  },
+  "transformers" : [
+   { "merge" : {
+     "joinFieldName": "film_id",
+     "lookup": "Film.film_id",
+     "unresolvedLinkAction": "WARNING"
+   }},
+   { "edge": { 
+     "class": "Acted_In", 
+     "direction": "in",
+     "joinFieldName": "actor_id",
+     "lookup": "Actor.actor_id",
+     "unresolvedLinkAction": "WARNING"
+   }},
+  ],
+  "loader" : {
+    "orientdb": {
+      "dbURL": "plocal:/opt/orientdb/databases/sakila",
+      "dbAutoCreate": true,
+      "dbType": "graph"
+    }
+  }
+}

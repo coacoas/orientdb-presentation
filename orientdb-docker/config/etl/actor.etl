@@ -1,0 +1,33 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "extractor" : {
+    "jdbc": { "driver": "com.mysql.jdbc.Driver",
+              "url": "jdbc:mysql://sakila/sakila",
+              "userName": "root",
+              "userPassword": "sakila",
+              "queryCount": "select count(*) from actor",
+              "query": "select 
+    actor_id,
+    first_name,
+    last_name,
+    last_update 
+    from actor" }
+  },
+  "transformers" : [
+   { "vertex": { "class": "Actor"} }
+  ],
+  "loader" : {
+    "orientdb": {
+      "dbURL": "plocal:/opt/orientdb/databases/sakila",
+      "dbAutoCreate": true,
+      "dbType": "graph",
+      "indexes": [{
+        "type": "UNIQUE", 
+        "class":"Actor", 
+        "fields":["actor_id:long"]
+      }]
+    }
+  }
+}
