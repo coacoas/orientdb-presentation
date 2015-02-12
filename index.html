@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+        <link rel="stylesheet" type="text/css" href="css/orientdb.css"/>
+        <meta charset="utf-8">
+
+		<title>Multi-Model on the OrientDB Express</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+        <link rel="stylesheet" href="css/orientdb.css">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Multi-Model on the OrientDB Express</h1>
+				</section>
+
+                <section>
+                    <h1>We're hiring!</h1>
+                    <a href="http://vorrohealth.com"><img src="vorrologo.jpg" alt="VorroHealth Logo"/></a>
+                    <p>For information, email <a href="mailto:bcarlson@vorrohealth.com">bcarlson@vorrohealth.com</a></p>
+                </section>
+
+                <section>
+                    <h1>Disclaimer</h1>
+                </section>
+
+				<section>
+					<section>
+                        <h1>Overview</h1>
+                    </section>
+					<section>
+                        <h2>Types of Databases</h2>
+                        <ul>
+                            <li class="fragment">Relational</li>
+                            <li class="fragment">Column-Based</li>
+                            <li class="fragment">Key/Value Stores</li>
+                            <li class="fragment">Document</li>
+                            <li class="fragment">Graph</li>
+                        </ul>
+                    </section>
+					<section>
+                        <h2>Relational Database</h2>
+                        <p>Join Tables</p>
+                        <div class="container">
+                            <div class="cell noborder">
+                                <table>
+                                    <tr>
+                                        <thead colspan="3">Customers</thead>
+                                    </tr>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>name</th>
+                                        <th>addr_id</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Bill</td>
+                                        <td>14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Eyal</td>
+                                        <td>42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Clint</td>
+                                        <td>14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Muthu</td>
+                                        <td>56</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="cell noborder">
+                                <table>
+                                    <tr>
+                                        <thead colspan="2">Address</thead>
+                                    </tr>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>city</th>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>Rome</td>
+                                    </tr>
+                                    <tr>
+                                        <td>42</td>
+                                        <td>Pompeii</td>
+                                    </tr>
+                                    <tr>
+                                        <td>56</td>
+                                        <td>Naples</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>Relational Database</h2>
+                        <p>Join Tables</p>
+                        <div class="container">
+                            <div class="cell noborder">
+                                <table>
+                                    <tr>
+                                        <thead colspan="3">Customers</thead>
+                                    </tr>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>name</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Bill</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Eyal</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Clint</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Muthu</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="cell noborder">
+                                <table>
+                                    <tr>
+                                        <thead colspan="3">customer_address</thead>
+                                    </tr>
+                                    <tr>
+                                        <th>cust_id</th>
+                                        <th>addr_id</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>56</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="cell noborder">
+                                <table>
+                                    <tr>
+                                        <thead colspan="2">Address</thead>
+                                    </tr>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>city</th>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>Rome</td>
+                                    </tr>
+                                    <tr>
+                                        <td>42</td>
+                                        <td>Pompeii</td>
+                                    </tr>
+                                    <tr>
+                                        <td>56</td>
+                                        <td>Naples</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+					<section>
+                        <h2>Graph Databases</h2>
+			<ul>
+                        <li>G = (V, E)</li>
+                        <li>Data gets stored on a Vertex</li>
+                        <li>Relations are stored as Edges between vertices</li>
+                        <li>Edges are direct pointers - no expensive lookup required!</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>So what is OrientDB?</h3>
+                        <small><ul>
+                            <li>Hybrid Document/Graph Database</li>
+                            <li>Schema-less, schema-full, or schema-mixed</li>
+                            <li>Inheritance and Polymorphism</li>
+                            <li>Extract data using Extended SQL or Gremlin/Blueprints</li>
+                            <li>Mult-master replication and sharding</li>
+                            <li>ACID transactions</li>
+                            <li>APIs for several languages</li>
+                            <li>Record level security</li>
+                            <li>REST services</li>
+                            <li>Embedded functions</li>
+                            <li>Browser-based interface</li>
+                            <li>Lucene indexes</li>
+                            <li>Runs anwyhere there's a JVM</li>
+                            <li>... and more</li>
+                        </ul></small>
+                    </section>
+				</section>
+
+				<section>
+					<h1>Installation</h1>
+                    <ol>
+                        <li class="fragment"><a href="http://www.orientechnologies.com/download/">Download</a></li>
+                        <li class="fragment">Extract</li>
+                        <li class="fragment">Run</li>
+                    </ol>
+                    <h3 class="fragment">That's it!</h3>
+				</section>
+
+                <section>
+                    <section>
+                        <h2>About the Data</h2>
+                        <ol>
+                            <li>Classes</li>
+                            <li>Document, Vertex, Edge, Property</li>
+                            <li>Clusters</li>
+                        </ol>
+                    </section>
+                    <section>
+                        <h2>Classes</h2>
+                        <ul>
+                            <li>Signifies a collection of data records</li>
+                            <li>Analagous to a table in an RDBMS</li>
+                            <li>Basic classes in a Graph Database: V, E</li>
+                            <li>Allows for inheritance</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Document, Vertex, Edge, Property</h3>
+                        <div class="container">
+                            <div class="cell">
+                                <h4>Document/Vertex</h4>
+                                <p>Data entities.
+                                    Can store structured or unstructured data.
+                                    Can contain sub-documents.</p>
+                            </div>
+                            <div class="cell">
+                                <h4>Edge</h4>
+                                <p>Used to store relationships between Vertices.
+                                    Have in/out directionality.</p>
+                            </div>
+                            <div class="cell">
+                                <h4>Property</h4>
+                                <p>Typed or JSON data stored in association with Documents, Vertices, or Edges.</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>Standard Properties</h3>
+                        <p>All documents/vertices/edges have some properties</p>
+                        <ul>
+                            <li><strong>@class</strong> - String representing the class name</li>
+                            <li><strong>@rid</strong> - record ID, of the form &lt;cluster>:&lt;id>.
+                                This marks the physical location of this node and cannot change.</li>
+                            <li><strong>@version</strong> - Version count for this element. Stored for transactions and
+                            conflict resolution. Old versions are not stored. Mostly won't have to worry about this.
+                                Incremented on each update.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Clusters</h2>
+                        <ul>
+                            <li>Clusters are associated with classes</li>
+                            <li>Every class is created with one cluster (by default)</li>
+                            <li>New clusters may be added</li>
+                            <li>Each cluster lives on at least one machine (with replication)</li>
+                        </ul>
+                        <div>
+                            <div class="container">
+                                <div class="place3"></div>
+                                <div>Class: Customers</div>
+                                <div class="place3"></div>
+                            </div>
+                            <div class="container">
+                                <div class="cell">
+                                    <div>Server: West</div>
+                                    <div class="bordered">
+                                        <ul>
+                                            <li>Europe</li>
+                                            <li>Asia</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div>Server: East</div>
+                                    <div class="bordered">
+                                        <ul>
+                                            <li>US</li>
+                                            <li>Europe</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div>Server: Europe</div>
+                                    <div class="bordered">
+                                        <ul>
+                                            <li>Asia</li>
+                                            <li>US</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h1>What about Schemas?</h1>
+                        <ul>
+                            <li>This <i>is</i> a NoSQL database</li>
+                            <li>No schemas needed, but you <i>can</i> implement them</li>
+                            <li>Benefits: <ul>
+                                <li>Required for indexes</li>
+                                <li>Reduce memory requirements</li>
+                                <li>Data constraints</li>
+                            </ul>
+                            </li>
+                        </ul>
+                        <code><pre></pre></code>
+                    </section>
+                    <section>
+                        <h2>How Does This Relate?</h2>
+
+                        <h4>Document Model</h4>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Relational Model</th>
+                                <th>Document Model</th>
+                                <th>OrientDB Document Model</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Table</td>
+                                <td>Collection</td>
+                                <td>Class or Cluster</td>
+                            </tr>
+                            <tr>
+                                <td>Row</td>
+                                <td>Document</td>
+                                <td>Document</td>
+                            </tr>
+                            <tr>
+                                <td>Column</td>
+                                <td>Key/value pair</td>
+                                <td>Document field</td>
+                            </tr>
+                            <tr>
+                                <td>Relationship</td>
+                                <td>not available</td>
+                                <td>Link</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section><section>
+                        <h4>Graph Model</h4>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Relational Model</th>
+                                <th>Graph Model</th>
+                                <th>OrientDB Graph Model</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Table</td>
+                                <td>Vertex and Edge</td>
+                                <td>Class that extends "V" (for Vertex) and "E" (for Edges)</td>
+                            </tr>
+                            <tr>
+                                <td>Row</td>
+                                <td>Vertex</td>
+                                <td>Vertex</td>
+                            </tr>
+                            <tr>
+                                <td>Column</td>
+                                <td>Vertex and Edge property</td>
+                                <td>Vertex and Edge property</td>
+                            </tr>
+                            <tr>
+                                <td>Relationship</td>
+                                <td>Edge</td>
+                                <td>Edge</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Working with Data</h1>
+                    </section>
+                    <section>
+                        <h3>SQL Interface</h3>
+                        <p><small>Yeah, I know... NoSQL</small></p>
+                        <ul>
+                            <li class="fragment">CREATE CLASS</li>
+                            <li class="fragment">CREATE CLUSTER</li>
+                            <li class="fragment">CREATE VERTEX</li>
+                            <li class="fragment">CREATE EDGE</li>
+                            <li class="fragment">CREATE PROPERTY</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Defining Classes</h3>
+                        <p>
+                            CREATE CLASS &lt;classname>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Inserting Data</h3>
+                        <ul>
+                            <li class="fragment">INSERT &lt;class> (field1, field2, ..., fieldN) VALUES (value1, value2, ..., valueN)
+                            </li>
+                            <li class="fragment">INSERT &ltclass> CONTENT {"json": "data"}</li>
+                            <li class="fragment">CREATE VERTEX [&lt;class>] [CLUSTER &lt;cluster>] [SET &lt;field> = &lt;expression>], [SET...]   </li>
+                            <li class="fragment">CREATE EDGE &lt;class> FROM &lt;rid> TO &lt;rid> </li>
+                            <li class="fragment">And many other forms</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Defining Schemas</h3>
+                        <p>CREATE PROPERTY &lt;class>.&lt;name> &lt;datatype> [&lt;linked-type>]</p>
+                    </section>
+                    <section>
+                        <h3>Data Types</h3>
+                        <ul>
+                            <small>
+                                <li>boolean</li>
+                                <li>integer</li>
+                                <li>short</li>
+                                <li>long</li>
+                                <li>float</li>
+                                <li>double</li>
+                                <li>date</li>
+                                <li>string</li>
+                                <li>binary</li>
+                                <li>embedded</li>
+                                <li>link</li>
+                                <li>byte</li>
+                                <li>Collection types (require an additional type parameter):
+                                    <ul>
+                                        <li>embeddedlist</li>
+                                        <li>embeddedset</li>
+                                        <li>embeddedmap</li>
+                                        <li>linklist</li>
+                                        <li>linkset</li>
+                                        <li>linkmap</li>
+                                    </ul>
+                                </li>
+                            </small>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Demo</h3>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Document API</h1>
+                    </section>
+                    <section>
+                        <h2>Open Connection</h2>
+                        <pre><code>ODatabaseDocumentTx db = new ODatabaseDocumentTx(
+    "remote:localhost/VehicleHistoryGraph").
+        open("admin", "admin");
+
+    try {
+        ...
+    } finally {
+        db.close();
+    }
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Transactions</h2>
+                        <pre><code class="hljs java">
+    try {
+        db.begin();
+        ...
+        db.commit();
+    } catch (Exception e) {
+        db.rollback();
+    }
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Queries</h2>
+                    </section>
+
+                    <section>
+                        <h2>Synchronous Query</h2>
+                        <pre><code class="hljs java">
+    OSQLSynchQuery&lt;ODocument> q = new OSQLSynchQuery<>("select count(*) from Doc");
+    for (ODocument i : q.run()) {
+        System.out.println("Found " + i);
+    }
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Asynchronous Query</h2>
+<pre><code class="hljs java"> new OSQLAsynchQuery&lt;ODocument>("select from Doc",
+                            new OCommandResultListener() {
+        @Override
+        public boolean result(Object o) {
+            ODocument doc = (ODocument) o;
+            System.out.println("Received " + doc.getIdentity());
+            System.out.println("Name: " +
+                doc.field("firstname") +
+                " " + doc.field("lastname"));
+            return false;
+        }
+
+        @Override
+        public void end() { }
+    }).execute();</code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Graph API</h1>
+                    </section>
+                    <section>
+                        <h2>Open Connection</h2>
+<pre><code class="hljs java">OrientGraphFactory g =
+    new OrientGraphFactory("plocal:/opt/databases/dbname",
+    "admin", "admin").setupPool(1, 10);
+
+    OrientGraph tx = g.getTx();
+    try {
+    ...
+    } finally {
+    tx.shutdown();
+    }
+
+</code></pre>
+                    </section>
+                    <section>
+                        <h2>Transactions</h2>
+<pre><code class="hljs java">
+    OrientGraph tx = g.getTx();
+    try {
+    ...
+    tx.commit();
+    } catch (Exception e) {
+    tx.rollback();
+    }
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Creating Data</h2>
+                        <h4>Vertex</h4>
+<pre><code class="hljs java">    Vertex v = tx.addVertex(null);
+    v.setProperty("name", "Bill Carlson");
+    v.setProperty("organization", "JaxJUG"); </code></pre>
+                        <h4>Edge</h4>
+<pre><code class="hljs java">    Vertex v1 = tx.addVertex(null);
+    Vertex v2 = tx.addVertex(null);
+    Edge e = tx.addEdge(null, v1, v2, "connected");
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Retreiving Data</h2>
+<pre><code class="hljs java">for (Vertex v : graph.command(new OCommandSQL(
+    "select expand( in('isMake')) from Make where name = 'Jeep'")) {
+    System.out.println("Model: " + v);
+    }
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Gremlin/Blueprints</h2>
+                        <img src="tinkerpop-splash.png" alt="TinkerPop Characters"/>
+                        <div><small><caption>Image from http://www.tinkerpop.com</caption></small></div>
+                    </section>
+
+                    <section>
+                        <h3>Blueprints</h3>
+                        <p>Like JDBC for graph databases.  Implementations are
+                        available for several graph databases.</p>
+
+                        <hr/>
+
+                        <h3>Pipes</h3>
+                        <p>Dataflow framework for transforming data through a series
+                        of operations. </p>
+
+                        <hr/>
+
+                        <h3>Gremlin</h3>
+                        <p>Fluent DSL for graph database traversal</p>
+                    </section>
+
+                    <section>
+                        <h3>Gremlin-Java</h3>
+                        <pre><code class="hljs java">
+    OrientVertex v = g.getVertex(new ORecordId("15:643"));
+
+    new GremlinPipeline(v).
+        in("isMake").
+        in("isModel").
+        out("Purchased").
+        filter(new PipeFunction&lt;Vertex, Boolean>() {
+            @Override
+            public Boolean compute(Vertex v) {
+                BigDecimal price = v.getProperty("price");
+                return price.compareTo(new BigDecimal(70_000)) > 0;
+            }
+        }).in("Bought").property("fullName").
+           forEach(System.out::println);
+
+                        </code></pre>
+
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Security</h1>
+                    </section>
+                    <section>
+                        <h2>Schema Security</h2>
+                        <ul>
+                            <li>Based off of Users and Roles</li>
+                            <li>Users belong to one or more roles</li>
+                            <li>Roles are granted permissions to database-level elements</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Permissions</h2>
+                        <p>Similar to Unix rwx permissions, but using CRUD operations</p>
+                        <small><ul plain>
+                            <li><strong>CREATE</strong> - 1 (0001)</li>
+                            <li><strong>READ</strong> - 2 (0010)</li>
+                            <li><strong>UPDATE</strong> - 4 (0100)</li>
+                            <li><strong>DELETE</strong> - 8 (1000)</li>
+                            <li><strong>ALL</strong> - 15 (1111)</li>
+                        </ul></small>
+                        <p>May be combined, so READ + UPDATE have a permission value of 6 (0110)</p>
+                    </section>
+                    <section>
+                        <h2>Assigning Permissions</h2>
+                        <ul>
+                            <li>Roles are granted permissions in two ways:
+                                <ul plain=""><small>
+                                    <li>ALLOW ALL EXCEPT</li>
+                                    <li>DENY ALL EXCEPT</li>
+                                </small></ul>
+                            </li>
+                            <li>Operations are granted based on schema
+                                <ul><small>
+                                    <li>database</li>
+                                    <li>database.class</li>
+                                    <li>database.class.<class-name></li>
+                                    <li>database.cluster</li>
+                                    <li>database.cluster.<cluster-name></li>
+                                    <li>database.query</li>
+                                    <li>database.command</li>
+                                    <li>database.config</li>
+                                    <li>database.hook.record</li>
+                                    <li>server.admin</li>
+                                </small></ul>
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Example</h2>
+                        <p>Enable to the role "motorcyclist" the access to all the classes but the "Car" class:</p>
+                        <pre><code class="hljs sql">
+    update orole put rules = "database.class.*", 15 where name = "motorcyclist"
+    update orole put rules = "database.class.Car", 0 where name = "motorcyclist"
+                        </code></pre>
+                        <p><i>Note: resources are case sensitive</i></p>
+                    </section>
+                    <section>
+                        <h2>Record-Level Security</h2>
+                        <ul>
+                            <li>OrientDB also supports restricting data at the record level</li>
+                            <li>Each class must extend ORestricted
+                                <pre><code class="hljs sql">   alter class V superclass ORestricted</code></pre>
+                            </li>
+                            <li>Restricts the record to the user that created it</li>
+                            <li>
+                                Access may be controlled by adding users or roles to
+                                <ul><small>
+                                    <li>_allow</li>
+                                    <li>_allowRead</li>
+                                    <li>_allowUpdate</li>
+                                    <li>_allowDelete</li>
+                                </small></ul>
+                            </li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Distribution</h1>
+                    </section>
+                    <section>
+                        <h2>Powered by Hazelcast</h2>
+                        <img src="hazelcast-logo.png" alt="Hazelcast Logo"/>
+                    </section>
+                    <section>
+                        <h2>Features</h2>
+                        <ul>
+                            <li>Throughput</li>
+                            <li>Automatic Discovery</li>
+                            <li>Failover</li>
+                            <li>Sharding</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Master/Master</h2>
+                        <ul>
+                            <li>Until 2012, OrientDB used Master/Slave</li>
+                            <li>Fantastic read scalability</li>
+                            <li>All writes went through the master</li>
+                            <li>Reimplemented with Multi-master architecture</li>
+                            <li>Writes can now be processed on all servers
+                            <ul><li>Gives almost linear scalability </li></ul></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Auto-Discovery</h2>
+                        <ul>
+                            <li>Configuration is built on top of Hazelcast</li>
+                            <li>Provides auto-discovery using Multicast</li>
+                            <li>EC2 plugin also provided</li>
+                            <li>If multicast is disabled, define IP Addresses</li>
+                            <li>Fantastic for cloud deploys or elastic architectures</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Failover</h2>
+                        <ul>
+                            <li>Databases can be shared across machines</li>
+                            <li>OrientDB clients are also Hazelcast-aware</li>
+                            <li>If one machine goes down, the rest will continue serving data</li>
+                            <li>Clients connected to that server can automatically reconnect to another server in the cluster</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Sharding</h2>
+                        <ul>
+                            <li>Data is stored inside clusters</li>
+                            <li>Each class can have multiple clusters</li>
+                            <li>Each cluster can be on a separate physical machine</li>
+                            <li>Clusters may also be replicated to other servers</li>
+                            <li>All done through simple configuration</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Did I mention that it's</h2>
+                    <h1>FREE?</h1>
+                    <h4>Distributed under the Apache 2 License</h4>
+                </section>
+
+                <section>
+                    <ul><small>
+                        <li class="check">Hybrid Document/Graph Database</li>
+                        <li class="check">Schema-less, schema-full, or schema-mixed</li>
+                        <li class="check">Inheritance and Polymorphism</li>
+                        <li class="check">Extract data using Extended SQL or Gremlin/Blueprints</li>
+                        <li class="check">Mult-master replication and sharding</li>
+                        <li class="check">ACID transactions</li>
+                        <li class="check">APIs for several languages</li>
+                        <li class="check">Record level security</li>
+                        <li>REST services</li>
+                        <li>Embedded functions</li>
+                        <li class="check">Browser-based interface</li>
+                        <li>Indexes (SB-Tree/Hash/Lucene/etc)</li>
+                        <li class="check">Runs anwyhere there's a JVM</li>
+                        <li>... and more</li>
+                    </small></ul>
+
+                    <p>
+                        See the latest at <a href="http://orientdb.com">http://orientdb.com</a>
+                    </p>
+                </section>
+
+                <section>
+                    <h1>?</h1>
+                    <small><ul>
+                        <li>Email: <a href="mailto:bill@coacoas.net">bill@coacoas.net</a>
+                            <div><small>(or <a
+                                    href="mailto:bcarlson@vorrohealth.com">bcarlson@vorrohealth.com</a> for work questions/resume submissions)</small></div>
+                        </li>
+                        </li>
+                        <li>Twitter: <a href="http://www.twitter.com/coacoas">@coacoas</a></li>
+                        <p>This presentation and supporting code/configuration will be available at some point at
+                            <a target="_blank" href="http://github.com/coacoas/orientdb-presentation">http://github.com/coacoas/orientdb-presentation</a></p>
+                    </ul></small>
+
+                </section>
+                
+            </div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
