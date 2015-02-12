@@ -2,3 +2,7 @@
 !.gitignore
 
 atlassian-ide*.xml
+
+## Databases can be created through ETL (text file)
+## or downloaded from the cloud. 
+orientdb-docker/databases
